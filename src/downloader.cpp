@@ -3,36 +3,37 @@
 #include <iostream>
 #include <iomanip>
 
-//Static Variables
-std::filesystem::path Downloader::file_path_ = std::filesystem::current_path();
-double Downloader::progress_ = 0;
+Downloader::Downloader()
+{
+  file_path_ = std::filesystem::current_path();
+}
 
-int Downloader::ProgressBar(void *ptr,
-                            curl_off_t TotalToDownload,
-                            curl_off_t NowDownloaded,
-                            curl_off_t TotalToUpload,
-                            curl_off_t NowUploaded)
+int ProgressBar(void *handler,
+                curl_off_t TotalToDownload,
+                curl_off_t NowDownloaded,
+                curl_off_t TotalToUpload,
+                curl_off_t NowUploaded)
 {
   if (TotalToDownload <= 0)
   {
-    progress_ = 0;
+    ((Downloader *)handler)->SetProgress(0);
   }
   else
   {
-    progress_ = static_cast<double>(NowDownloaded) / TotalToDownload * 100;
+    ((Downloader *)handler)->SetProgress(static_cast<double>(NowDownloaded) / TotalToDownload * 100);
   }
 
   std::system("clear");
   std::cout << "<";
-  for (int i = 0; i < progress_; i++)
+  for (int i = 0; i < ((Downloader *)handler)->GetProgress(); i++)
   {
     std::cout << "#";
   }
-  for (int i = 0; i < 100 - progress_; i++)
+  for (int i = 0; i < 100 - ((Downloader *)handler)->GetProgress(); i++)
   {
     std::cout << " ";
   }
-  std::cout << "> " << std::setprecision(4) << progress_ << "%" << std::endl;
+  std::cout << "> " << std::setprecision(4) << ((Downloader *)handler)->GetProgress() << "%" << std::endl;
 
   return CURLE_OK;
 } //Function (ProgressBar)
@@ -42,8 +43,9 @@ void Downloader::SetFilePath(std::filesystem::path file_path)
   file_path_ = std::filesystem::weakly_canonical(file_path);
 } //Function (SetFilePath)
 
-size_t Downloader::WriteInHandler(char *ptr, size_t size, size_t nmemb, void *data)
+size_t WriteInHandler(char *ptr, size_t size, size_t nmemb, void *data)
 {
+
   FILE *writehere = (FILE *)data;
   return fwrite(ptr, size, nmemb, writehere);
 } //Function (WriteInHandler)
@@ -86,6 +88,7 @@ int Downloader::Download(std::string url, std::string file_name)
     curl_easy_setopt(curl_handler, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl_handler, CURLOPT_NOPROGRESS, 0L);
     curl_easy_setopt(curl_handler, CURLOPT_XFERINFOFUNCTION, ProgressBar);
+    curl_easy_setopt(curl_handler, CURLOPT_XFERINFODATA, this);
     curl_easy_setopt(curl_handler, CURLOPT_WRITEFUNCTION, WriteInHandler);
     curl_easy_setopt(curl_handler, CURLOPT_WRITEDATA, file_handler);
 
