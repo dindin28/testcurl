@@ -16,7 +16,8 @@ public:
 private:
   friend int ProgressBar(void *handler,
                          curl_off_t TotalToDownload,
-                         curl_off_t NowDownloaded, curl_off_t TotalToUpload,
+                         curl_off_t NowDownloaded,
+                         curl_off_t TotalToUpload,
                          curl_off_t NowUploaded);
   friend size_t WriteInHandler(char *ptr, size_t size, size_t nmemb, void *data);
 
