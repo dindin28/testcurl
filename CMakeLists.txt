@@ -12,14 +12,25 @@ if(NOT ${CURL_FOUND})
 endif()
 
 #========================
+#Headers
+#========================
+set(headers_path "${PROJECT_SOURCE_DIR}/include")
+
+#========================
 #Sources
 #========================
-file(GLOB srcs "*.cpp")
+file(GLOB srcs "src/*.cpp")
 
 #========================
 #Building executable
 #========================
 add_executable(${PROJECT_NAME} ${srcs})
+
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+    ${headers_path}
+)
 
 target_link_libraries(
   ${PROJECT_NAME}

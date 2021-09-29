@@ -1,39 +1,52 @@
-#include <curl/curl.h>
+#include <downloader/downloader.h>
 
-#include <fstream>
-#include <string>
-#include <filesystem>
 #include <iostream>
+#include <iomanip>
 
-class Downloader
-{
-public:
-  //No object creating
-  Downloader() = delete;
-  Downloader(const Downloader &) = delete;
-  void operator=(const Downloader &) = delete;
-  ~Downloader() = delete;
-
-  void static SetFilePath(std::filesystem::path file_path);
-  int static Download(std::string url, std::string file_name = "");
-
-private:
-  size_t static WriteInHandler(char *ptr, size_t size, size_t nmemb, void *data);
-  std::filesystem::path static file_path_; //Current path by default
-};
-
+//Static Variables
 std::filesystem::path Downloader::file_path_ = std::filesystem::current_path();
+double Downloader::progress_ = 0;
+
+int Downloader::ProgressBar(void *ptr,
+                            curl_off_t TotalToDownload,
+                            curl_off_t NowDownloaded,
+                            curl_off_t TotalToUpload,
+                            curl_off_t NowUploaded)
+{
+  if (TotalToDownload <= 0)
+  {
+    progress_ = 0;
+  }
+  else
+  {
+    progress_ = static_cast<double>(NowDownloaded) / TotalToDownload * 100;
+  }
+
+  std::system("clear");
+  std::cout << "<";
+  for (int i = 0; i < progress_; i++)
+  {
+    std::cout << "#";
+  }
+  for (int i = 0; i < 100 - progress_; i++)
+  {
+    std::cout << " ";
+  }
+  std::cout << "> " << std::setprecision(4) << progress_ << "%" << std::endl;
+
+  return CURLE_OK;
+} //Function (ProgressBar)
 
 void Downloader::SetFilePath(std::filesystem::path file_path)
 {
   file_path_ = std::filesystem::weakly_canonical(file_path);
-}
+} //Function (SetFilePath)
 
 size_t Downloader::WriteInHandler(char *ptr, size_t size, size_t nmemb, void *data)
 {
   FILE *writehere = (FILE *)data;
   return fwrite(ptr, size, nmemb, writehere);
-}
+} //Function (WriteInHandler)
 
 int Downloader::Download(std::string url, std::string file_name)
 {
@@ -71,6 +84,8 @@ int Downloader::Download(std::string url, std::string file_name)
   if (return_code == CURLE_OK)
   {
     curl_easy_setopt(curl_handler, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl_handler, CURLOPT_NOPROGRESS, 0L);
+    curl_easy_setopt(curl_handler, CURLOPT_XFERINFOFUNCTION, ProgressBar);
     curl_easy_setopt(curl_handler, CURLOPT_WRITEFUNCTION, WriteInHandler);
     curl_easy_setopt(curl_handler, CURLOPT_WRITEDATA, file_handler);
 
@@ -87,15 +102,4 @@ int Downloader::Download(std::string url, std::string file_name)
   curl_global_cleanup();
 
   return return_code;
-}
-
-int main(int argc, char **argv)
-{
-  Downloader::SetFilePath("./a");
-  int return_code = Downloader::Download("http://20.67.36.112:8083/arduino.jpg");
-  if (return_code != CURLE_OK)
-  {
-    std::cout << "return code is: " << return_code << std::endl;
-  }
-  return 0;
-}
+} //Function Download
