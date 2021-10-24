@@ -1,25 +1,27 @@
 
 #include <downloader/downloader.h>
+#include <curl/curl.h>
 
-#include <iostream>
-#include <chrono>
+#include <iostream>   //cout
+#include <filesystem> //current_path
+#include <string>     //string
 
 using namespace std::chrono;
 
 int main(int argc, char **argv)
 {
-  Downloader download_movie;
-  download_movie.AddDownload("http://arduino.ru/sites/default/files/Hardware/updated/Mega_fron.jpg"); // Without second parameter
-  download_movie.AddDownload("https://3d-diy.ru/upload/resize_cache/webp/upload/iblock/e8e/raspberry_pi_4_model_b.webp");
-  download_movie.AddDownload("https://ru.mouser.com/images/arduino/lrg/A000073_t.jpg", ".."); // With path parameter
-  time_point<steady_clock> start = steady_clock::now();
-  while (download_movie.GetCurrentDownloadUrl() != "")
+  char a[10];
+  a[10] = 0;
+  return 0;
+
+  std::string file_path;
+  file_path += std::filesystem::current_path().c_str();
+  file_path += "/../downloaded_pic.jpg";
+  Downloader download("http://arduino.ru/sites/default/files/Hardware/updated/Mega_fron.jpg", file_path.c_str());
+  CURLcode code = download.StartDownload();
+  if (code != CURLE_OK)
   {
-    if (steady_clock::now() - start > 10ms)
-    {
-      std::cout << download_movie.GetCurrentDownloadUrl() << ": " << download_movie.GetProgressOfCurrentFile() << std::endl;
-      start = steady_clock::now();
-    }
+    std::cout << "StartDownload() failed: " << curl_easy_strerror(code);
   }
   return 0;
 }
