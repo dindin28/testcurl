@@ -57,8 +57,13 @@ CURLcode Downloader::StartDownload()
   if (return_code == CURLE_OK)
   {
     curl_easy_setopt(curl_handler, CURLOPT_URL, url_.c_str());
+
+    //callbacks for writing downloaded data
     curl_easy_setopt(curl_handler, CURLOPT_WRITEFUNCTION, WriteInHandler);
     curl_easy_setopt(curl_handler, CURLOPT_WRITEDATA, file_handler);
+
+    //callbacks for timeout abort
+    curl_easy_setopt(curl_handler, CURLOPT_TIMEOUT, 10L);
 
     return_code = curl_easy_perform(curl_handler);
   }
