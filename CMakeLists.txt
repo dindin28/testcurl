@@ -12,7 +12,7 @@ project(Downloader
         LANGUAGES CXX)
 
 option(ANALYZE "Turn on static analyzer" ON)
-option(TEST "Include unit tests" OFF)
+option(TEST "Include unit tests" ON)
 option(DOCS "Make html doc with Doxygen" ON)
 
 add_subdirectory(lib)
