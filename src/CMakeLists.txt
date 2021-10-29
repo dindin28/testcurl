@@ -25,7 +25,7 @@ message(DEBUG "${srcs_library}")
 file(GLOB srcs_exec "main.cpp")
 message(DEBUG "${srcs_exec}")
 
-#include static analyzer function
+#Include static analyzer target (cppcheck)
 include("${PROJECT_SOURCE_DIR}/cmake/cppcheck.cmake")
 
 #========================
@@ -42,8 +42,6 @@ target_link_libraries(${LIBRARY_NAME}
 
 target_compile_features(${LIBRARY_NAME} PRIVATE cxx_std_17)
 
-analyze_file(${LIBRARY_NAME})
-
 #========================
 #Building executable
 #========================
@@ -53,5 +51,3 @@ target_link_libraries(${PROJECT_NAME}
                       PRIVATE ${LIBRARY_NAME})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-
-analyze_file(${PROJECT_NAME})
