@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 
   std::string file_path;
   file_path += std::filesystem::current_path().c_str();
-  file_path += "/../downloaded_pic.jpg";
-  Downloader download("https://o02.inadzor.be/3/Oblachno_2_2013_320.mp4", file_path.c_str());
+  file_path += "/downloaded_pic.mp4";
+  Downloader download("https://o03.inadzor.be/3/Dvernoy_zamok_2018_320.mp4", file_path.c_str());
   CURLcode code = download.StartDownload();
   if (code != CURLE_OK)
   {
