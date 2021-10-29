@@ -5,15 +5,6 @@
 #include <filesystem>
 #include <iostream>
 
-size_t WriteInHandler(char *ptr,
-                      size_t size,
-                      size_t nmemb,
-                      void *data)
-{
-  FILE *writehere = (FILE *)data;
-  return fwrite(ptr, size, nmemb, writehere);
-}
-
 Downloader::Downloader(const std::string &url,
                        const std::string &file_path)
     : url_(url), file_path_(file_path)
@@ -58,12 +49,12 @@ CURLcode Downloader::StartDownload()
   {
     curl_easy_setopt(curl_handler, CURLOPT_URL, url_.c_str());
 
-    //callbacks for writing downloaded data
-    curl_easy_setopt(curl_handler, CURLOPT_WRITEFUNCTION, WriteInHandler);
+    // callbacks for writing downloaded data
     curl_easy_setopt(curl_handler, CURLOPT_WRITEDATA, file_handler);
 
-    //callbacks for timeout abort
-    curl_easy_setopt(curl_handler, CURLOPT_TIMEOUT, 10L);
+    // callbacks for timeout abort
+    curl_easy_setopt(curl_handler, CURLOPT_LOW_SPEED_TIME, 10L);  // 10 seconds
+    curl_easy_setopt(curl_handler, CURLOPT_LOW_SPEED_LIMIT, 30L); // 30 bytes/minute
 
     return_code = curl_easy_perform(curl_handler);
   }
