@@ -1,5 +1,5 @@
+#include <downloader/downloader.hpp>
 
-#include <downloader/downloader.h>
 #include <curl/curl.h>
 
 #include <iostream>   //cout
@@ -8,8 +8,17 @@
 
 using namespace std::chrono;
 
+void foo(int x)
+{
+    int buf[10];
+    buf[x] = 0; // <- ERROR
+    if (x == 1000) {}
+}
+
 int main(int argc, char **argv)
 {
+  int ma[10];
+
   std::string file_path;
   file_path += std::filesystem::current_path().c_str();
   file_path += "/../downloaded_pic.jpg";

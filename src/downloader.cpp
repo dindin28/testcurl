@@ -1,4 +1,4 @@
-#include <downloader/downloader.h>
+#include <downloader/downloader.hpp>
 
 #include <curl/curl.h>
 
