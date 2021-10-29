@@ -1,3 +1,9 @@
 build
-html
+docs
+
+#When build folder is project folder
+CMakeCache.txt
+CMakeFiles
+
+#Ignoring pictures files
 *.jpg
