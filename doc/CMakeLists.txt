@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.10)
+
+set(DOXYGEN_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/doc")
+set(DOXYGEN_PROJECT_NAME "${PROJECT_NAME}")
+set(DOXYGEN_SOURCE_PATH "${PROJECT_SOURCE_DIR}")
+
+set(DOXYGEN_EXCLUDE_PATH "${PROJECT_SOURCE_DIR}/lib \
+                          ${PROJECT_SOURCE_DIR}/test")
+
+include("${PROJECT_SOURCE_DIR}/cmake/doc.cmake")

@@ -13,7 +13,7 @@ project(Downloader
 
 option(ANALYZE "Turn on static analyzer" ON)
 option(TEST "Include unit tests" OFF)
-option(DOCS "Make html doc with Doxygen" OFF)
+option(DOCS "Make html doc with Doxygen" ON)
 
 add_subdirectory(lib)
 add_subdirectory(src)
