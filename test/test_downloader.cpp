@@ -3,11 +3,23 @@
 
 #include <filesystem>
 
+class DownloaderUnitTest : public testing::Test
+{
+  DownloaderUnitTest()
+  {
+    file_path += std::filesystem::current_path().c_str();
+    file_path += "/downloaded_pic.jpg";
+  }
+  void AccessibleUrl()
+  {
+  }
+
+public:
+  std::string file_path;
+}
+
 TEST(DownloaderUnitTest, AccessibleUrl)
 {
-  std::string file_path;
-  file_path += std::filesystem::current_path().c_str();
-  file_path += "/downloaded_pic.jpg";
   Downloader download("http://arduino.ru/sites/default/files/Hardware/updated/Mega_fron.jpg", file_path.c_str());
   EXPECT_EQ(download.StartDownload(), CURLE_OK);
 }
