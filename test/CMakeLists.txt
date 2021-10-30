@@ -5,7 +5,7 @@ set(TEST_EXEC "test_downloader")
 #========================
 #Sources
 #========================
-file(GLOB srcs_test "*.cpp")
+file(GLOB srcs_test "*.test.cpp")
 
 #========================
 #Build unit tests
