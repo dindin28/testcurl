@@ -8,4 +8,5 @@ add_custom_target(cppcheck
                           --quiet
                           -I "${PROJECT_SOURCE_DIR}/include"
                           ${ALL_SOURCE_FILES}
+                  COMMAND echo "Analyzing finished successfully"
                   VERBATIM)
