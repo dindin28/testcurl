@@ -11,6 +11,11 @@ void foo(int x)
   }
 }
 
+/*!
+  @class Downloader downloader.hpp "downloader/downloader.hpp"
+  @brief Class for downloading files from webpages
+  */
+
 class Downloader
 {
 public:
