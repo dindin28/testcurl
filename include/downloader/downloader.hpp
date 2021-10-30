@@ -2,19 +2,10 @@
 
 #include <string>
 
-void foo(int x)
-{
-  int buf[10];
-  buf[x] = 0; // <- ERROR
-  if (x == 1000)
-  {
-  }
-}
-
 /*!
-  @class Downloader downloader.hpp "downloader/downloader.hpp"
-  @brief Class for downloading files from webpages
-  */
+@class Downloader downloader.hpp "downloader/downloader.hpp"
+@brief Class for downloading files from webpages
+*/
 
 class Downloader
 {
