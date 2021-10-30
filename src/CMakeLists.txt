@@ -32,4 +32,6 @@ target_compile_features(${LIBRARY_NAME} PRIVATE cxx_std_17)
 #========================
 #Build examples
 #========================
-add_subdirectory(examples)
+if(EXAMPLES)
+  add_subdirectory(examples)
+endif()

@@ -14,6 +14,7 @@ project(Downloader
 option(ANALYZE "Turn on static analyzer" ON)
 option(TEST "Include unit tests" ON)
 option(DOCS "Make html doc with Doxygen" ON)
+option(EXAMPLES "Build examples executables" ON)
 
 add_subdirectory(lib)
 add_subdirectory(src)
