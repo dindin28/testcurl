@@ -1,13 +1,8 @@
 #include <downloader/downloader.hpp>
 
-#include <curl/curl.h>
-
 #include <iostream>   //cout
 #include <filesystem> //current_path
 #include <string>     //string
-#include <chrono>
-
-using namespace std::chrono;
 
 int main(int argc, char **argv)
 {
